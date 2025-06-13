@@ -20,7 +20,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-blue-600">
-                Sindicato
+              Grupo Impulso
               </span>
             </Link>
           </div>

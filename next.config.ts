@@ -1,9 +1,7 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["mongodb"],
-  },
+  serverExternalPackages: ["mongodb"],
   images: {
     domains: ["localhost", "res.cloudinary.com"],
     remotePatterns: [
