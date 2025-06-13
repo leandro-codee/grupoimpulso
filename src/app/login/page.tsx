@@ -1,5 +1,13 @@
-import { Suspense } from "react"
-import LoginPageContent from "./LoginPageContent"
+// Force this page to be dynamic to avoid build issues
+export const dynamic = "force-dynamic"
+
+import { Metadata } from "next"
+import LoginClient from "./LoginClient"
+
+export const metadata: Metadata = {
+  title: "Iniciar Sesión - Panel de Administración",
+  description: "Accede al panel de administración",
+}
 
 export default function LoginPage() {
   return (
@@ -13,15 +21,7 @@ export default function LoginPage() {
             Ingresa tus credenciales para acceder
           </p>
         </div>
-        <Suspense
-          fallback={
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            </div>
-          }
-        >
-          <LoginPageContent />
-        </Suspense>
+        <LoginClient />
       </div>
     </div>
   )

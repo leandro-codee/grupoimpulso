@@ -1,8 +1,8 @@
 "use client"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -15,28 +15,41 @@ export default function AdminLayout({
 }: AdminLayoutProps) {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const [isAuthorized, setIsAuthorized] = useState(false)
 
   useEffect(() => {
     if (status === "loading") return
+
     if (!session) {
-      router.push("/admin/login")
+      router.replace("/login")
       return
     }
+
     if ((session.user as any).role !== "admin") {
-      router.push("/")
+      router.replace("/")
       return
     }
+
+    setIsAuthorized(true)
   }, [session, status, router])
+
+  const handleSignOut = async () => {
+    const { signOut } = await import("next-auth/react")
+    await signOut({
+      callbackUrl: "/login",
+      redirect: true,
+    })
+  }
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center h-screen">
-        Cargando...
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     )
   }
 
-  if (!session || (session.user as any).role !== "admin") {
+  if (!isAuthorized) {
     return null
   }
 
@@ -73,10 +86,10 @@ export default function AdminLayout({
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-700">
-                {session.user?.email}
+                {session?.user?.email}
               </span>
               <button
-                onClick={() => signOut()}
+                onClick={handleSignOut}
                 className="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700"
               >
                 Cerrar Sesión
