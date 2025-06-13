@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
           pending: `${process.env.NEXTAUTH_URL}/seminars/payment-pending?sale=${sale.insertedId}`,
         },
         //auto_return: "approved",
-        //external_reference: sale.insertedId.toString(),
+        external_reference: sale.insertedId.toString(),
         //notification_url: `${process.env.NEXTAUTH_URL}/api/payments/mercadopago/webhook`,
       },
     })
