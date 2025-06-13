@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
 
         const user = (await findOneDocument("users", {
           email: credentials.email.toLowerCase(),
-        })) as User
+        })) as unknown as User
 
         if (!user) {
           throw new Error("Usuario no encontrado")
@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (token) {
         session.user.id = token.sub!
         ;(session.user as any).role = token.role

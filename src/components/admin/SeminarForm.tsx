@@ -19,8 +19,8 @@ export default function SeminarForm({
     description: seminar?.description || "",
     shortDescription: seminar?.shortDescription || "",
     eventDate: seminar?.eventDate
-      ? new Date(seminar.eventDate).toISOString().slice(0, 16)
-      : "",
+      ? (new Date(seminar.eventDate).toISOString().slice(0, 16) as any)
+      : ("" as any),
     duration: seminar?.duration || "",
     modality: seminar?.modality || "in_person",
     price: seminar?.price || 0,
@@ -125,7 +125,7 @@ export default function SeminarForm({
           <input
             type="datetime-local"
             name="eventDate"
-            value={formData.eventDate}
+            value={formData.eventDate as any}
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

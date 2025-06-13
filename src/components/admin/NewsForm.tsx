@@ -20,8 +20,8 @@ export default function NewsForm({
     excerpt: article?.excerpt || "",
     content: article?.content || "",
     publishDate: article?.publishDate
-      ? new Date(article.publishDate).toISOString().slice(0, 16)
-      : new Date().toISOString().slice(0, 16),
+      ? (new Date(article.publishDate).toISOString().slice(0, 16) as any)
+      : (new Date().toISOString().slice(0, 16) as any),
     category: article?.category || "general",
     tags: article?.tags || [],
     status: article?.status || "draft",
@@ -174,7 +174,7 @@ export default function NewsForm({
           <input
             type="datetime-local"
             name="publishDate"
-            value={formData.publishDate}
+            value={formData.publishDate as unknown as any}
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

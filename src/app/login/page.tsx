@@ -1,35 +1,7 @@
-"use client"
-import { useState, useEffect } from "react"
-import { signIn, getSession } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
-import LoginForm from "@/components/admin/LoginForm"
+import { Suspense } from "react"
+import LoginPageContent from "./LoginPageContent"
 
 export default function LoginPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [loading, setLoading] = useState(true)
-  const callbackUrl = searchParams.get("callbackUrl") || "/admin"
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession()
-      if (session && (session.user as any).role === "admin") {
-        router.push(callbackUrl)
-      } else {
-        setLoading(false)
-      }
-    }
-    checkSession()
-  }, [router, callbackUrl])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -41,7 +13,15 @@ export default function LoginPage() {
             Ingresa tus credenciales para acceder
           </p>
         </div>
-        <LoginForm callbackUrl={callbackUrl} />
+        <Suspense
+          fallback={
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+          }
+        >
+          <LoginPageContent />
+        </Suspense>
       </div>
     </div>
   )

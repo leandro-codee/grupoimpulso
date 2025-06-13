@@ -1,9 +1,7 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["mongodb"],
-  },
+  experimental: {},
   images: {
     domains: ["localhost", "res.cloudinary.com"],
     remotePatterns: [
@@ -13,8 +11,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Enable edge runtime for better performance
-  runtime: "edge",
 }
 
 export default nextConfig

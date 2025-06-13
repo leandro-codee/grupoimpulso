@@ -54,28 +54,28 @@ export async function POST(request: NextRequest) {
       saleDate: new Date(),
     })
 
-    // Configure Transbank
-    if (process.env.TRANSBANK_ENVIRONMENT === "production") {
-      WebpayPlus.configureForProduction(
-        process.env.TRANSBANK_API_KEY!,
-        process.env.TRANSBANK_API_KEY!
-      )
-    } else {
-      WebpayPlus.configureForTesting()
-    }
+    // // Configure Transbank
+    // if (process.env.TRANSBANK_ENVIRONMENT === "production") {
+    //   WebpayPlus.configureForProduction(
+    //     process.env.TRANSBANK_API_KEY!,
+    //     process.env.TRANSBANK_API_KEY!
+    //   )
+    // } else {
+    //   WebpayPlus.configureForTesting()
+    // }
 
-    // Create transaction
-    const response = await WebpayPlus.Transaction.create(
-      saleNumber,
-      sale.insertedId.toString(),
-      seminar.price,
-      `${process.env.NEXTAUTH_URL}/seminars/transbank-return`
-    )
+    // // Create transaction
+    // const response = await WebpayPlus.Transaction.create(
+    //   saleNumber,
+    //   sale.insertedId.toString(),
+    //   seminar.price,
+    //   `${process.env.NEXTAUTH_URL}/seminars/transbank-return`
+    // )
 
     return NextResponse.json({
       success: true,
-      token: response.token,
-      url: response.url,
+      // token: response.token,
+      // url: response.url,
       saleId: sale.insertedId,
     })
   } catch (error) {

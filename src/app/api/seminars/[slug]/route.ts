@@ -3,10 +3,7 @@ import { findOneDocument } from "@/lib/mongodb"
 
 // export const runtime = "edge"
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, { params }: any) {
   try {
     const seminar = await findOneDocument("seminars", {
       slug: params.slug,

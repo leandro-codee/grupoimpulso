@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { MercadoPagoConfig, Payment } from "mercadopago"
+import { MercadoPagoConfig, Payment, PaymentRefund } from "mercadopago"
 import { findOneDocument, updateDocument } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { formatDate, formatPrice } from "@/lib/utils"
@@ -286,16 +286,16 @@ function generateRefundEmail(sale: SaleData, seminar: SeminarData): string {
   `
 }
 
-// Process refund through MercadoPago
+// Método principal usando PaymentRefund
 async function processRefund(
   paymentId: string,
   amount: number
 ): Promise<boolean> {
   try {
-    const payment = new Payment(client)
+    const paymentRefund = new PaymentRefund(client)
 
-    const refundResponse = await payment.refund({
-      id: paymentId,
+    const refundResponse = await paymentRefund.create({
+      payment_id: paymentId,
       body: {
         amount: amount,
       },
@@ -305,6 +305,36 @@ async function processRefund(
     return refundResponse.status === "approved"
   } catch (error) {
     console.error("Error processing refund:", error)
+    return false
+  }
+}
+
+// En caso de que PaymentRefund falle, usamos la API REST directamente
+async function processRefundDirect(
+  paymentId: string,
+  amount: number
+): Promise<boolean> {
+  try {
+    const response = await fetch(
+      `https://api.mercadopago.com/v1/payments/${paymentId}/refunds`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: amount,
+        }),
+      }
+    )
+
+    const refundData = await response.json()
+    console.log("Direct refund processed:", refundData)
+
+    return response.ok && refundData.status === "approved"
+  } catch (error) {
+    console.error("Error processing direct refund:", error)
     return false
   }
 }
@@ -341,21 +371,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the sale in our database
-    const sale = (await findOneDocument("sales", {
+    const foundSale = await findOneDocument("sales", {
       _id: new ObjectId(paymentData.external_reference),
-    })) as SaleData
+    })
 
-    if (!sale) {
+    if (!foundSale) {
       console.error("❌ Sale not found:", paymentData.external_reference)
       return NextResponse.json({ error: "Sale not found" }, { status: 404 })
     }
+
+    // Ahora asegura que result cumple con SaleData (puedes usar type assertion si confías en la estructura)
+    const sale = foundSale as unknown as SaleData
 
     console.log("🛒 Sale found:", sale.saleNumber)
 
     // Get seminar details
     const seminar = (await findOneDocument("seminars", {
       _id: new ObjectId(sale.seminarId),
-    })) as SeminarData
+    })) as unknown as SeminarData
 
     if (!seminar) {
       console.error("❌ Seminar not found:", sale.seminarId)
@@ -417,13 +450,19 @@ async function handleApprovedPayment(
   // Check if there are still available slots
   const currentSeminar = (await findOneDocument("seminars", {
     _id: new ObjectId(sale.seminarId),
-  })) as SeminarData
+  })) as unknown as SeminarData
 
   if (currentSeminar.availableSlots <= 0) {
     console.log("⚠️ No slots available, processing refund...")
 
     // Process refund
-    const refundSuccess = await processRefund(paymentData.id, sale.total)
+    // Intenta primero PaymentRefund, luego API directa
+    let refundSuccess = await processRefund(paymentData.id, sale.total)
+
+    if (!refundSuccess) {
+      console.log("⚠️ Primary refund failed, trying direct API...")
+      refundSuccess = await processRefundDirect(paymentData.id, sale.total)
+    }
 
     if (refundSuccess) {
       // Update sale status to refunded

@@ -7,10 +7,7 @@ import { generateSlug } from "@/lib/utils"
 
 // export const runtime = "edge"
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: any) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user || (session.user as any).role !== "admin") {
@@ -38,10 +35,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: any) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user || (session.user as any).role !== "admin") {
@@ -81,10 +75,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: any) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user || (session.user as any).role !== "admin") {
