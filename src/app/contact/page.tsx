@@ -10,6 +10,7 @@ export default function ContactoPage() {
     subject: '',
     message: ''
   })
+  const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
 
@@ -45,32 +46,45 @@ export default function ContactoPage() {
     return true
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setSuccess(false)
 
     if (!validateForm()) return
 
-    // Crear el enlace mailto
-    const emailTo = 'info@grupoimpulso.cl'
-    const emailSubject = encodeURIComponent(`${formData.subject} - Mensaje de ${formData.name}`)
-    const emailBody = encodeURIComponent(
-      `Nombre: ${formData.name}\n` +
-      `Email: ${formData.email}\n` +
-      `Asunto: ${formData.subject}\n\n` +
-      `Mensaje:\n${formData.message}\n\n` +
-      `---\n` +
-      `Este mensaje fue enviado desde el formulario de contacto de Grupo Impulso`
-    )
+    setLoading(true)
 
-    const mailtoLink = `mailto:${emailTo}?subject=${emailSubject}&body=${emailBody}`
-    
-    // Abrir el cliente de email
-    window.location.href = mailtoLink
-    
-    // Mostrar mensaje de éxito
-    setSuccess(true)
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    try {
+      console.log(formData)
+      // Enviar email usando nuestra API interna (evita CORS)
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        setSuccess(true)
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      } else {
+        throw new Error(result.error || 'Error al enviar el mensaje')
+      }
+    } catch (err) {
+      console.error('Error:', err)
+      setError('Error al enviar el mensaje. Por favor, intenta nuevamente o contáctanos por WhatsApp.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -92,7 +106,7 @@ export default function ContactoPage() {
               <CardContent>
                 {success && (
                   <div className="mb-4 p-4 bg-green-100 border border-green-300 rounded-md">
-                    <p className="text-green-700">¡Se ha abierto tu cliente de email con el mensaje preparado!</p>
+                    <p className="text-green-700">¡Mensaje enviado exitosamente! Te responderemos pronto.</p>
                   </div>
                 )}
                 
@@ -116,6 +130,7 @@ export default function ContactoPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Tu nombre"
                       required
+                      disabled={loading}
                     />
                   </div>
                   <div>
@@ -131,6 +146,7 @@ export default function ContactoPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="tu@email.com"
                       required
+                      disabled={loading}
                     />
                   </div>
                   <div>
@@ -146,6 +162,7 @@ export default function ContactoPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Asunto del mensaje"
                       required
+                      disabled={loading}
                     />
                   </div>
                   <div>
@@ -161,18 +178,27 @@ export default function ContactoPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Escribe tu mensaje aquí..."
                       required
+                      disabled={loading}
                     ></textarea>
                   </div>
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-blue-500 hover:bg-blue-600"
+                    className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
+                    disabled={loading}
                   >
-                    📧 Enviar mensaje
+                    {loading ? (
+                      <>
+                        <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
+                        Enviando...
+                      </>
+                    ) : (
+                      '📧 Enviar mensaje'
+                    )}
                   </Button>
                   
                   <p className="text-xs text-gray-500 text-center">
-                    Se abrirá tu cliente de email predeterminado con el mensaje preparado
+                    Tu mensaje será enviado directamente a nuestro equipo
                   </p>
                 </form>
               </CardContent>
