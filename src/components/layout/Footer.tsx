@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-4">
               <span className="text-2xl font-bold text-blue-400">
-                Sindicato
+              Grupo Impulso
               </span>
             </div>
             <p className="text-gray-400 mb-4">
@@ -148,7 +148,7 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                info@sindicato.cl
+                info@grupoimpulso.cl
               </li>
             </ul>
           </div>
@@ -157,7 +157,7 @@ export default function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Sindicato. Todos los derechos
+              © {new Date().getFullYear()} Grupo Impulso. Todos los derechos
               reservados.
             </p>
             <div className="mt-4 md:mt-0 flex space-x-6">
