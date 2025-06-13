@@ -1,0 +1,85 @@
+import { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs"
+import { findOneDocument, insertDocument } from "./mongodb"
+import { User } from "@/types"
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email y contraseña son requeridos")
+        }
+
+        const user = (await findOneDocument("users", {
+          email: credentials.email.toLowerCase(),
+        })) as User
+
+        if (!user) {
+          throw new Error("Usuario no encontrado")
+        }
+
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password!
+        )
+
+        if (!isValid) {
+          throw new Error("Contraseña incorrecta")
+        }
+
+        return {
+          id: user._id!.toString(),
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        }
+      },
+    }),
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as any).role
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.sub!
+        ;(session.user as any).role = token.role
+      }
+      return session
+    },
+  },
+  pages: {
+    signIn: "/admin/login",
+  },
+}
+
+// Helper function to create initial admin user
+export async function createInitialAdmin() {
+  const existingAdmin = await findOneDocument("users", { role: "admin" })
+
+  if (!existingAdmin && process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+    const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12)
+
+    await insertDocument("users", {
+      email: process.env.ADMIN_EMAIL.toLowerCase(),
+      name: "Administrador",
+      password: hashedPassword,
+      role: "admin",
+    })
+
+    console.log("Initial admin user created")
+  }
+}
