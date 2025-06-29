@@ -15,13 +15,13 @@ export default function SeminarForm({
 }: SeminarFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState<Partial<Seminar>>({
+  const [formData, setFormData] = useState<Partial<Seminar & { eventDate: string }>>({
     title: seminar?.title || "",
     description: seminar?.description || "",
     shortDescription: seminar?.shortDescription || "",
     eventDate: seminar?.eventDate
-      ? new Date(seminar.eventDate).toISOString().slice(0, 16)
-      : "",
+      ? (new Date(seminar.eventDate).toISOString().slice(0, 16) as unknown as any)
+      : ("" as unknown as any),
     duration: seminar?.duration || "",
     modality: seminar?.modality || "in_person",
     price: seminar?.price || 0,

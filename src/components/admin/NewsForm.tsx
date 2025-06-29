@@ -15,13 +15,13 @@ export default function NewsForm({
 }: NewsFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState<Partial<NewsArticle>>({
+  const [formData, setFormData] = useState<Partial<NewsArticle & { publishDate: string }>>({
     title: article?.title || "",
     excerpt: article?.excerpt || "",
     content: article?.content || "",
     publishDate: article?.publishDate
-      ? new Date(article.publishDate).toISOString().slice(0, 16)
-      : new Date().toISOString().slice(0, 16),
+      ? (new Date(article.publishDate).toISOString().slice(0, 16)) as unknown as any
+      : (new Date().toISOString().slice(0, 16)) as unknown as any,
     category: article?.category || "general",
     tags: article?.tags || [],
     status: article?.status || "draft",
