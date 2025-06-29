@@ -29,3 +29,4 @@ export const config = {
   // Only protect admin routes, exclude login page
   matcher: ["/admin/:path*"],
 }
+
