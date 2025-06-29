@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Seminar } from "@/types"
 import { formatDate, formatPrice } from "@/lib/utils"
 
@@ -48,9 +49,45 @@ export default function SeminarsPage() {
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
           Seminarios y Capacitaciones
         </h1>
-        <p className="text-xl text-gray-600">
+        <p className="text-xl text-gray-600 mb-6">
           Fortalece tus conocimientos con nuestros seminarios especializados
         </p>
+        
+        <div className="bg-blue-50 rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+            Nuestros seminarios incluyen:
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+            <div className="flex items-start">
+              <span className="text-blue-600 mr-2">•</span>
+              <div>
+                <strong>Capacitación especializada</strong><br />
+                Contenido actualizado y relevante para dirigentes sindicales
+              </div>
+            </div>
+            <div className="flex items-start">
+              <span className="text-blue-600 mr-2">•</span>
+              <div>
+                <strong>Modalidades flexibles</strong><br />
+                Presencial, virtual o híbrida según tus necesidades
+              </div>
+            </div>
+            <div className="flex items-start">
+              <span className="text-blue-600 mr-2">•</span>
+              <div>
+                <strong>Instructores expertos</strong><br />
+                Profesionales con amplia experiencia en el área laboral
+              </div>
+            </div>
+            <div className="flex items-start">
+              <span className="text-blue-600 mr-2">•</span>
+              <div>
+                <strong>Certificación</strong><br />
+                Obtén certificados que respalden tu formación
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -59,8 +96,26 @@ export default function SeminarsPage() {
             key={seminar._id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
+            {seminar.featuredImage && (
+              <div className="relative h-48 w-full">
+                <Image
+                  src={seminar.featuredImage}
+                  alt={seminar.title}
+                  fill
+                  className="object-cover"
+                />
+                {seminar.featured && (
+                  <div className="absolute top-2 left-2">
+                    <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">
+                      Destacado
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="p-6">
-              {seminar.featured && (
+              {!seminar.featuredImage && seminar.featured && (
                 <span className="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full mb-2">
                   Destacado
                 </span>
@@ -119,6 +174,17 @@ export default function SeminarsPage() {
                   </svg>
                   {modalityLabels[seminar.modality]}
                 </div>
+
+                <div className="flex items-center text-sm text-gray-500">
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {seminar.instructor}
+                </div>
               </div>
 
               <div className="flex justify-between items-center">
@@ -142,6 +208,17 @@ export default function SeminarsPage() {
           </div>
         ))}
       </div>
+
+      {seminars.length === 0 && (
+        <div className="text-center py-12">
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No hay seminarios disponibles
+          </h3>
+          <p className="text-gray-600">
+            Pronto tendremos nuevos seminarios disponibles. ¡Mantente atento!
+          </p>
+        </div>
+      )}
     </div>
   )
 }

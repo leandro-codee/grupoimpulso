@@ -12,6 +12,13 @@
   "dependencies": {
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
+    "@tiptap/extension-image": "^2.23.0",
+    "@tiptap/extension-text-align": "^2.23.0",
+    "@tiptap/extension-underline": "^2.23.0",
+    "@tiptap/extension-youtube": "^2.23.0",
+    "@tiptap/pm": "^2.23.0",
+    "@tiptap/react": "^2.23.0",
+    "@tiptap/starter-kit": "^2.23.0",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.6.1",
