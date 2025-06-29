@@ -71,6 +71,12 @@ export default function AdminLayout({
                   Seminarios
                 </Link>
                 <Link
+                  href="/admin/courses"
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Cursos
+                </Link>
+                <Link
                   href="/admin/news"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >

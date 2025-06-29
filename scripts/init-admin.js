@@ -53,6 +53,13 @@ async function createInitialAdmin() {
 
     await db.collection("users").createIndex({ email: 1 }, { unique: true })
 
+    // Create indexes for courses
+    await db.collection("courses").createIndex({ slug: 1 }, { unique: true })
+    await db.collection("courses").createIndex({ status: 1, startDate: 1 })
+    await db.collection("courses").createIndex({ featured: 1 })
+    await db.collection("courses").createIndex({ level: 1 })
+    await db.collection("courses").createIndex({ category: 1 })
+
     console.log("✅ Database indexes created successfully")
   } catch (error) {
     console.error("❌ Error initializing database:", error)

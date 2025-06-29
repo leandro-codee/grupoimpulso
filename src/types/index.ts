@@ -30,6 +30,33 @@ export interface Seminar {
   updatedAt?: Date
 }
 
+export interface Course {
+  _id?: string
+  title: string
+  slug: string
+  description: string
+  shortDescription: string
+  featuredImage?: string
+  startDate: Date
+  endDate: Date
+  duration: string
+  modality: "in_person" | "virtual" | "hybrid"
+  price: number
+  totalSlots: number
+  availableSlots: number
+  instructor: string
+  location?: string
+  virtualLink?: string
+  status: "draft" | "published" | "sold_out" | "finished"
+  featured: boolean
+  level: "beginner" | "intermediate" | "advanced"
+  category: "technical" | "management" | "safety" | "leadership"
+  requirements?: string[]
+  syllabus?: string[]
+  createdAt?: Date
+  updatedAt?: Date
+}
+
 export interface NewsArticle {
   _id?: string
   title: string
@@ -50,7 +77,8 @@ export interface NewsArticle {
 export interface Sale {
   _id?: string
   saleNumber: string
-  seminarId: string
+  itemId: string // Can be seminar or course ID
+  itemType: "seminar" | "course"
   customerEmail: string
   customerName: string
   customerPhone: string
