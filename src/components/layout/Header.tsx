@@ -10,6 +10,8 @@ export default function Header() {
     { name: "Seminarios", href: "/seminars" },
     { name: "Noticias", href: "/news" },
     { name: "Nosotros", href: "/about" },
+    { name: "Con Quién Trabajamos", href: "/partners" },
+    { name: "En qué estamos", href: "/what-we-do" },
     { name: "Contacto", href: "/contact" },
   ]
 
@@ -20,18 +22,18 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-blue-600">
-              Grupo Impulso
+                Grupo Impulso
               </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap"
               >
                 {item.name}
               </Link>
@@ -39,7 +41,7 @@ export default function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
@@ -69,7 +71,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {navigation.map((item) => (
                 <Link

@@ -1,67 +1,69 @@
-"use client"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
+"use client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export default function ContactoPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  })
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState('')
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const validateForm = () => {
     if (!formData.name.trim()) {
-      setError('El nombre es requerido')
-      return false
+      setError("El nombre es requerido");
+      return false;
     }
     if (!formData.email.trim()) {
-      setError('El email es requerido')
-      return false
+      setError("El email es requerido");
+      return false;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError('El email no es válido')
-      return false
+      setError("El email no es válido");
+      return false;
     }
     if (!formData.subject.trim()) {
-      setError('El asunto es requerido')
-      return false
+      setError("El asunto es requerido");
+      return false;
     }
     if (!formData.message.trim()) {
-      setError('El mensaje es requerido')
-      return false
+      setError("El mensaje es requerido");
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setSuccess(false)
+    e.preventDefault();
+    setError("");
+    setSuccess(false);
 
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      console.log(formData)
+      console.log(formData);
       // Enviar email usando nuestra API interna (evita CORS)
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: formData.name,
@@ -69,47 +71,56 @@ export default function ContactoPage() {
           subject: formData.subject,
           message: formData.message,
         }),
-      })
+      });
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (response.ok && result.success) {
-        setSuccess(true)
-        setFormData({ name: '', email: '', subject: '', message: '' })
+        setSuccess(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        throw new Error(result.error || 'Error al enviar el mensaje')
+        throw new Error(result.error || "Error al enviar el mensaje");
       }
     } catch (err) {
-      console.error('Error:', err)
-      setError('Error al enviar el mensaje. Por favor, intenta nuevamente o contáctanos por WhatsApp.')
+      console.error("Error:", err);
+      setError(
+        "Error al enviar el mensaje. Por favor, intenta nuevamente o contáctanos por WhatsApp."
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8 text-center">Contacto</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-8 text-center">
+            Contacto
+          </h1>
 
           <p className="text-lg text-gray-600 text-center mb-12">
-            ¿Tienes alguna consulta o te interesa colaborar con nosotros? No dudes en contactarnos.
+            ¿Tienes alguna consulta o te interesa colaborar con nosotros? No
+            dudes en contactarnos.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <Card className="bg-white shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl text-gray-800">Envíanos un mensaje</CardTitle>
+                <CardTitle className="text-2xl text-gray-800">
+                  Envíanos un mensaje
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 {success && (
                   <div className="mb-4 p-4 bg-green-100 border border-green-300 rounded-md">
-                    <p className="text-green-700">¡Mensaje enviado exitosamente! Te responderemos pronto.</p>
+                    <p className="text-green-700">
+                      ¡Mensaje enviado exitosamente! Te responderemos pronto.
+                    </p>
                   </div>
                 )}
-                
+
                 {error && (
                   <div className="mb-4 p-4 bg-red-100 border border-red-300 rounded-md">
                     <p className="text-red-700">{error}</p>
@@ -118,7 +129,10 @@ export default function ContactoPage() {
 
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Nombre completo
                     </label>
                     <input
@@ -134,7 +148,10 @@ export default function ContactoPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Correo electrónico
                     </label>
                     <input
@@ -150,7 +167,10 @@ export default function ContactoPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Asunto
                     </label>
                     <input
@@ -166,7 +186,10 @@ export default function ContactoPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Mensaje
                     </label>
                     <textarea
@@ -181,9 +204,9 @@ export default function ContactoPage() {
                       disabled={loading}
                     ></textarea>
                   </div>
-                  
-                  <Button 
-                    type="submit" 
+
+                  <Button
+                    type="submit"
                     className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50"
                     disabled={loading}
                   >
@@ -193,10 +216,10 @@ export default function ContactoPage() {
                         Enviando...
                       </>
                     ) : (
-                      '📧 Enviar mensaje'
+                      "📧 Enviar mensaje"
                     )}
                   </Button>
-                  
+
                   <p className="text-xs text-gray-500 text-center">
                     Tu mensaje será enviado directamente a nuestro equipo
                   </p>
@@ -208,7 +231,9 @@ export default function ContactoPage() {
             <div className="space-y-6">
               <Card className="bg-white shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-xl text-gray-800">Información de contacto</CardTitle>
+                  <CardTitle className="text-xl text-gray-800">
+                    Información de contacto
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* WhatsApp - Opción Principal */}
@@ -216,17 +241,47 @@ export default function ContactoPage() {
                     <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mt-1">
                       <i className="fab fa-whatsapp text-white"></i>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-800">WhatsApp</p>
-                      <p className="text-gray-600">+56 9 9418 0834</p>
-                      <p className="text-xs text-green-600 mb-2">¡Respuesta inmediata!</p>
-                      <button
-                        onClick={() => window.open('https://api.whatsapp.com/send/?phone=%2B56994180834&text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20servicios%20de%20Grupo%20Impulso&type=phone_number&app_absent=0', '_blank')}
-                        className="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors"
-                      >
-                        <i className="fab fa-whatsapp"></i>
-                        Escribir ahora
-                      </button>
+                    <div className="flex gap-6 flex-wrap">
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-800">WhatsApp</p>
+                        <p className="text-gray-600">+56 9 9418 0834</p>
+                        <p className="text-xs text-green-600 mb-2">
+                          ¡Respuesta inmediata!
+                        </p>
+                        <button
+                          onClick={() =>
+                            window.open(
+                              "https://api.whatsapp.com/send/?phone=%2B56994180834&text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20servicios%20de%20Grupo%20Impulso&type=phone_number&app_absent=0",
+                              "_blank"
+                            )
+                          }
+                          className="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors cursor-pointer"
+                        >
+                          <i className="fab fa-whatsapp"></i>
+                          Escribir ahora
+                        </button>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-800">
+                          2do whatsapp
+                        </p>
+                        <p className="text-gray-600">+56 9 9818 0995</p>
+                        <p className="text-xs text-green-600 mb-2">
+                          ¡Respuesta inmediata!
+                        </p>
+                        <button
+                          onClick={() =>
+                            window.open(
+                              "https://api.whatsapp.com/send/?phone=%2B56998180995&text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20servicios%20de%20Grupo%20Impulso&type=phone_number&app_absent=0",
+                              "_blank"
+                            )
+                          }
+                          className="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors cursor-pointer"
+                        >
+                          <i className="fab fa-whatsapp"></i>
+                          Escribir ahora
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -236,6 +291,7 @@ export default function ContactoPage() {
                     <div>
                       <p className="font-medium text-gray-800">Teléfono</p>
                       <p className="text-gray-600">+56 9 9418 0834</p>
+                      <p className="text-gray-600">+56 9 9818 0995</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -244,7 +300,11 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <p className="font-medium text-gray-800">Email</p>
-                      <p className="text-gray-600">info@grupoimpulso.cl</p>
+                      <p className="text-gray-600">
+                        <a href="mailto:impulso@grupoimpulso.cl">
+                          impulso@grupoimpulso.cl
+                        </a>
+                      </p>
                     </div>
                   </div>
 
@@ -262,12 +322,15 @@ export default function ContactoPage() {
 
               <Card className="bg-white shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-xl text-gray-800">Horarios de atención</CardTitle>
+                  <CardTitle className="text-xl text-gray-800">
+                    Horarios de atención
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 text-gray-600">
                     <p>
-                      <span className="font-medium">Lunes a Viernes:</span> 9:00 - 18:00
+                      <span className="font-medium">Lunes a Viernes:</span> 9:00
+                      - 18:00
                     </p>
                     <p>
                       <span className="font-medium">Sábados:</span> 9:00 - 13:00
@@ -283,5 +346,5 @@ export default function ContactoPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
