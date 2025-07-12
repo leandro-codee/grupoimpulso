@@ -22,9 +22,11 @@ export default function Header() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-blue-600">
-                Grupo Impulso
-              </span>
+              <img
+                src="/grupoimpulso-logo.png"
+                alt="Grupo Impulso Logo"
+                className="h-12 w-auto"
+              />
             </Link>
           </div>
 
