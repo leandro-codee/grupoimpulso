@@ -84,90 +84,69 @@ export default function PartnersPage() {
               Nuestros Aliados Estratégicos
             </h2>
             <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-              {/* Aquí se pueden agregar los logos de las empresas y sindicatos */}
+              {/* Logos agregados automáticamente desde la carpeta public que empiezan con 'image' */}
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/codelco-el-teniente.jpeg"
-                  alt="Codelco División El Teniente"
-                />
+                <img className="h-12 w-auto object-contain" src="/image1.png" alt="Aliado estratégico 1" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/sindicato-el-soldado.jpeg"
-                  alt="Sindicato N°3 El Soldado"
-                />
+                <img className="h-12 w-auto object-contain" src="/image2.png" alt="Aliado estratégico 2" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/codelco-hales.jpeg"
-                  alt="Codelco División Ministro Hales"
-                />
+                <img className="h-12 w-auto object-contain" src="/image3.png" alt="Aliado estratégico 3" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/sindicato-zaldivar.jpeg"
-                  alt="Sindicato Minera Zaldivar"
-                />
+                <img className="h-12 w-auto object-contain" src="/image4.png" alt="Aliado estratégico 4" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/spence.jpeg"
-                  alt="Minera Spence S.A."
-                />
+                <img className="h-12 w-auto object-contain" src="/image5.png" alt="Aliado estratégico 5" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/Minera-Candelaria-300.jpeg"
-                  alt="Minera Candelaria"
-                />
+                <img className="h-12 w-auto object-contain" src="/image6.jpg" alt="Aliado estratégico 6" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/aguas-andina.jpeg"
-                  alt="Aguas Andinas"
-                />
+                <img className="h-12 w-auto object-contain" src="/image7.jpg" alt="Aliado estratégico 7" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/smlp-logo.jpeg"
-                  alt="SMLP"
-                />
+                <img className="h-12 w-auto object-contain" src="/image9.jpg" alt="Aliado estratégico 8" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/universidad-central.jpeg"
-                  alt="Universidad Central"
-                />
+                <img className="h-12 w-auto object-contain" src="/image10.gif" alt="Aliado estratégico 9" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/angloamerican.jpeg"
-                  alt="Anglo American"
-                />
+                <img className="h-12 w-auto object-contain" src="/image11.png" alt="Aliado estratégico 10" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/centinela.jpeg"
-                  alt="Centinela Antofagasta Minerals"
-                />
+                <img className="h-12 w-auto object-contain" src="/image12.jpg" alt="Aliado estratégico 11" />
               </div>
               <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <img
-                  className="h-12 w-auto object-contain"
-                  src="/cropped-LogoSindicatoGrandeTrasparente.jpeg"
-                  alt="Sindicato"
-                />
+                <img className="h-12 w-auto object-contain" src="/image13.jpg" alt="Aliado estratégico 12" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image14.png" alt="Aliado estratégico 13" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image15.jpg" alt="Aliado estratégico 14" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image16.png" alt="Aliado estratégico 15" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image17.jpg" alt="Aliado estratégico 16" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image18.jpg" alt="Aliado estratégico 17" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image19.png" alt="Aliado estratégico 18" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image20.png" alt="Aliado estratégico 19" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image21.jpg" alt="Aliado estratégico 20" />
+              </div>
+              <div className="col-span-1 flex justify-center items-center bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <img className="h-12 w-auto object-contain" src="/image22.jpg" alt="Aliado estratégico 21" />
               </div>
             </div>
           </div>
