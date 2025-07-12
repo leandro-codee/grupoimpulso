@@ -141,7 +141,7 @@ export default function SeminarDetailPage() {
   const handleWhatsAppRedirect = () => {
     if (!seminar) return;
     const message = encodeURIComponent(`Hola, quiero inscribirme en el seminario: ${seminar.title}`);
-    window.open(`https://wa.me/56912345678?text=${message}`, '_blank');
+    window.open(`https://wa.me/56994180834?text=${message}`, '_blank');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
