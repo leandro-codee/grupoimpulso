@@ -79,7 +79,7 @@ export default function PartnersPage() {
           </div>
 
           {/* Logos de empresas y sindicatos */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-white border border-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">
               Nuestros Aliados Estratégicos
             </h2>

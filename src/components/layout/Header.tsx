@@ -8,7 +8,6 @@ export default function Header() {
   const navigation = [
     { name: "Inicio", href: "/" },
     { name: "Seminarios", href: "/seminars" },
-    { name: "Cursos", href: "/courses" },
     { name: "Noticias", href: "/news" },
     { name: "Nosotros", href: "/about" },
     { name: "Con Quién Trabajamos", href: "/partners" },
