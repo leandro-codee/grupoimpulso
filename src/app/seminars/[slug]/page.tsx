@@ -138,6 +138,12 @@ export default function SeminarDetailPage() {
     }
   }
 
+  const handleWhatsAppRedirect = () => {
+    if (!seminar) return;
+    const message = encodeURIComponent(`Hola, quiero inscribirme en el seminario: ${seminar.title}`);
+    window.open(`https://wa.me/56912345678?text=${message}`, '_blank');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -323,177 +329,12 @@ export default function SeminarDetailPage() {
 
               {seminar.availableSlots > 0 ? (
                 <div>
-                  {!showPaymentForm ? (
-                    <button
-                      onClick={() => setShowPaymentForm(true)}
-                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold"
-                    >
-                      Inscribirse Ahora
-                    </button>
-                  ) : (
-                    <div className="space-y-4">
-                      <h3 className="font-semibold text-gray-900">
-                        Datos de Inscripción
-                      </h3>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Email *
-                        </label>
-                        <input
-                          type="email"
-                          name="customerEmail"
-                          value={formData.customerEmail}
-                          onChange={handleChange}
-                          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                            formErrors.customerEmail
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          }`}
-                          required
-                        />
-                        {formErrors.customerEmail && (
-                          <p className="text-red-500 text-xs mt-1">
-                            {formErrors.customerEmail}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Nombre Completo *
-                        </label>
-                        <input
-                          type="text"
-                          name="customerName"
-                          value={formData.customerName}
-                          onChange={handleChange}
-                          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                            formErrors.customerName
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          }`}
-                          required
-                        />
-                        {formErrors.customerName && (
-                          <p className="text-red-500 text-xs mt-1">
-                            {formErrors.customerName}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Teléfono *
-                        </label>
-                        <input
-                          type="tel"
-                          name="customerPhone"
-                          value={formData.customerPhone}
-                          onChange={handleChange}
-                          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                            formErrors.customerPhone
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          }`}
-                          required
-                        />
-                        {formErrors.customerPhone && (
-                          <p className="text-red-500 text-xs mt-1">
-                            {formErrors.customerPhone}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          RUT *
-                        </label>
-                        <input
-                          type="text"
-                          name="customerRut"
-                          value={formData.customerRut}
-                          onChange={handleChange}
-                          placeholder="12.345.678-9"
-                          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                            formErrors.customerRut
-                              ? "border-red-300"
-                              : "border-gray-300"
-                          }`}
-                          required
-                        />
-                        {formErrors.customerRut && (
-                          <p className="text-red-500 text-xs mt-1">
-                            {formErrors.customerRut}
-                          </p>
-                        )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Dirección
-                        </label>
-                        <input
-                          type="text"
-                          name="customerAddress"
-                          value={formData.customerAddress}
-                          onChange={handleChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Método de Pago
-                        </label>
-                        <div className="space-y-2">
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              value="mercadopago"
-                              checked={paymentMethod === "mercadopago"}
-                              onChange={(e) =>
-                                setPaymentMethod(
-                                  e.target.value as "mercadopago"
-                                )
-                              }
-                              className="mr-2"
-                            />
-                            Mercado Pago
-                          </label>
-                          <label className="flex items-center">
-                            <input
-                              type="radio"
-                              value="transbank"
-                              checked={paymentMethod === "transbank"}
-                              onChange={(e) =>
-                                setPaymentMethod(e.target.value as "transbank")
-                              }
-                              className="mr-2"
-                            />
-                            Transbank (WebPay)
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <button
-                          onClick={handlePurchase}
-                          disabled={submitting}
-                          className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-semibold disabled:opacity-50"
-                        >
-                          {submitting ? "Procesando..." : "Proceder al Pago"}
-                        </button>
-
-                        <button
-                          onClick={() => setShowPaymentForm(false)}
-                          className="w-full bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors"
-                        >
-                          Cancelar
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  <button
+                    onClick={handleWhatsAppRedirect}
+                    className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors font-semibold"
+                  >
+                    Inscribirse vía WhatsApp
+                  </button>
                 </div>
               ) : (
                 <button
