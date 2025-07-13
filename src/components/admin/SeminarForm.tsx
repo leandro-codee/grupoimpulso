@@ -26,6 +26,7 @@ export default function SeminarForm({
     modality: seminar?.modality || "in_person",
     price: seminar?.price || 0,
     totalSlots: seminar?.totalSlots || 1,
+    availableSlots: seminar?.availableSlots || 0,
     instructor: seminar?.instructor || "",
     location: seminar?.location || "",
     virtualLink: seminar?.virtualLink || "",
@@ -33,6 +34,7 @@ export default function SeminarForm({
     featured: seminar?.featured || false,
     featuredImage: seminar?.featuredImage || "",
   })
+  const [slotsError, setSlotsError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -75,15 +77,25 @@ export default function SeminarForm({
     >
   ) => {
     const { name, value, type } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
+    setFormData((prev) => {
+      const newValue =
         type === "checkbox"
           ? (e.target as HTMLInputElement).checked
           : type === "number"
           ? Number(value)
-          : value,
-    }))
+          : value;
+      const updated = { ...prev, [name]: newValue };
+      // Validación de cupos
+      if (
+        (name === "availableSlots" && Number(newValue) > Number(prev.totalSlots)) ||
+        (name === "totalSlots" && Number(prev.availableSlots) > Number(newValue))
+      ) {
+        setSlotsError("Los cupos disponibles no pueden ser mayores que los totales.");
+      } else {
+        setSlotsError("");
+      }
+      return updated;
+    });
   }
 
   const handleDescriptionChange = (content: string) => {
@@ -266,6 +278,24 @@ export default function SeminarForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
+              Cupos Disponibles
+            </label>
+            <input
+              type="number"
+              name="availableSlots"
+              value={formData.availableSlots}
+              onChange={handleChange}
+              min="0"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="0"
+            />
+            {slotsError && (
+              <p className="text-red-600 text-sm mt-1">{slotsError}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Estado
             </label>
             <select
@@ -437,10 +467,10 @@ export default function SeminarForm({
           </button>
           <button
             type="submit"
-            disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            disabled={loading || !!slotsError}
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold disabled:opacity-50"
           >
-            {loading ? "Guardando..." : isEditing ? "Actualizar" : "Crear"} Seminario
+            {loading ? "Guardando..." : isEditing ? "Actualizar Seminario" : "Crear Seminario"}
           </button>
         </div>
       </form>
