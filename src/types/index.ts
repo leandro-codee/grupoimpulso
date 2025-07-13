@@ -15,6 +15,7 @@ export interface Seminar {
   description: string
   shortDescription: string
   featuredImage?: string
+  videoUrl?: string
   eventDate: Date
   duration: string
   modality: "in_person" | "virtual" | "hybrid"

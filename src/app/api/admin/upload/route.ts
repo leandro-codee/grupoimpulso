@@ -32,18 +32,26 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
 
     // Upload to Cloudinary
+    const isVideo = file.type.startsWith('video/')
+    const uploadOptions = isVideo
+      ? {
+          resource_type: 'video' as const,
+          folder: 'union-website',
+        }
+      : {
+          resource_type: 'image' as const,
+          folder: 'union-website',
+          transformation: [
+            { width: 1200, height: 630, crop: 'limit' },
+            { quality: 'auto' },
+            { format: 'auto' },
+          ],
+        }
+
     const uploadResult = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
-          {
-            resource_type: "auto",
-            folder: "union-website",
-            transformation: [
-              { width: 1200, height: 630, crop: "limit" },
-              { quality: "auto" },
-              { format: "auto" },
-            ],
-          },
+          uploadOptions,
           (error, result) => {
             if (error) reject(error)
             else resolve(result)

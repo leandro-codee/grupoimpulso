@@ -121,6 +121,35 @@ export default function SeminarForm({
     }
   }
 
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.type !== 'video/mp4') {
+      alert('Solo se permite subir videos en formato MP4')
+      return
+    }
+    const uploadFormData = new FormData()
+    uploadFormData.append('file', file)
+    try {
+      const response = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+      const result = await response.json()
+      if (result.success) {
+        setFormData((prev) => ({
+          ...prev,
+          videoUrl: result.data.url,
+        }))
+      } else {
+        alert('Error al subir video')
+      }
+    } catch (error) {
+      console.error('Error uploading video:', error)
+      alert('Error al subir video')
+    }
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
       <form
@@ -349,6 +378,39 @@ export default function SeminarForm({
             />
           </div>
         )}
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Video del Seminario (opcional, mp4)
+          </label>
+          <div className="space-y-2">
+            <label className="cursor-pointer inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
+              Subir Video
+              <input
+                type="file"
+                accept="video/mp4"
+                onChange={handleVideoUpload}
+                className="hidden"
+              />
+            </label>
+            {formData.videoUrl && (
+              <div className="mt-2">
+                <video
+                  src={formData.videoUrl}
+                  controls
+                  className="h-32 w-56 object-cover rounded-lg border"
+                />
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, videoUrl: "" }))}
+                  className="mt-1 text-sm text-red-600 hover:text-red-800"
+                >
+                  Eliminar video
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="flex items-center space-x-4">
           <label className="flex items-center">

@@ -187,6 +187,15 @@ export default function SeminarDetailPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
+        {seminar.videoUrl && (
+          <div className="w-full mb-8 flex justify-center">
+            <video
+              src={seminar.videoUrl}
+              controls
+              className="max-h-96 w-full rounded-lg border shadow"
+            />
+          </div>
+        )}
         {seminar.featuredImage && (
           <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden">
             <Image
