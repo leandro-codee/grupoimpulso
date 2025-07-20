@@ -82,7 +82,7 @@ export default function SeminarForm({
         type === "checkbox"
           ? (e.target as HTMLInputElement).checked
           : type === "number"
-          ? Number(value)
+          ? value === "" ? 0 : Number(value)
           : value;
       const updated = { ...prev, [name]: newValue };
       // Validación de cupos
@@ -283,7 +283,7 @@ export default function SeminarForm({
             <input
               type="number"
               name="availableSlots"
-              value={formData.availableSlots}
+              value={formData.availableSlots === 0 ? "" : formData.availableSlots}
               onChange={handleChange}
               min="0"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
