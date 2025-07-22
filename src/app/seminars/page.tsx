@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Seminar } from "@/types"
-import { formatDate, formatPrice } from "@/lib/utils"
+import { formatDate } from "@/lib/utils"
 
 const modalityLabels = {
   in_person: "Presencial",
@@ -188,13 +188,8 @@ export default function SeminarsPage() {
               </div>
 
               <div className="flex justify-between items-center">
-                <div>
-                  <span className="text-2xl font-bold text-blue-600">
-                    {formatPrice(seminar.price)}
-                  </span>
-                  <div className="text-sm text-gray-500">
-                    {seminar.availableSlots} cupos disponibles
-                  </div>
+                <div className="text-sm text-gray-500">
+                  {seminar.availableSlots} cupos disponibles
                 </div>
 
                 <Link
