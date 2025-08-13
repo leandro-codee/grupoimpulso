@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const seminars = await findDocuments("seminars", query, {
       skip,
       limit,
-      sort: { eventDate: -1 },
+      sort: { startDate: -1 },
     })
 
     return NextResponse.json({

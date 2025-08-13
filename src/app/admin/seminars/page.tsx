@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import AdminLayout from "@/components/admin/AdminLayout"
 import Link from "next/link"
 import { Seminar } from "@/types"
-import { formatDate, formatPrice } from "@/lib/utils"
+import { formatDateRange, formatPrice } from "@/lib/utils"
 import { Edit, Trash2, Eye } from "lucide-react"
 
 export default function AdminSeminarsPage() {
@@ -115,7 +115,7 @@ export default function AdminSeminarsPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {formatDate(seminar.eventDate)}
+                    {formatDateRange(seminar.startDate, seminar.endDate)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {formatPrice(seminar.price)}
@@ -192,7 +192,7 @@ export default function AdminSeminarsPage() {
             <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
               <div>
                 <span className="text-gray-500">Fecha:</span>
-                <p className="font-medium">{formatDate(seminar.eventDate)}</p>
+                <p className="font-medium">{formatDateRange(seminar.startDate, seminar.endDate)}</p>
               </div>
               <div>
                 <span className="text-gray-500">Precio:</span>

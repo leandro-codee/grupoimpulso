@@ -55,7 +55,8 @@ export async function POST(request: NextRequest) {
     const seminarData: Omit<Seminar, "_id"> = {
       ...body,
       slug: generateSlug(body.title),
-      eventDate: new Date(body.eventDate),
+      startDate: new Date(body.startDate + 'T00:00:00.000Z'),
+      endDate: new Date(body.endDate + 'T23:59:59.999Z'),
       availableSlots: body.totalSlots,
     }
 

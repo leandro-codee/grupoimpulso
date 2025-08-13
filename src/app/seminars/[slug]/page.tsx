@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import Image from "next/image"
 import { Seminar } from "@/types"
-import { formatDate, isValidEmail, isValidRut } from "@/lib/utils"
+import { formatDateRange, isValidEmail, isValidRut } from "@/lib/utils"
+import SeminarDescription from "@/components/SeminarDescription"
 
 const modalityLabels = {
   in_person: "Presencial",
@@ -187,15 +188,6 @@ export default function SeminarDetailPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
-        {seminar.videoUrl && (
-          <div className="w-full mb-8 flex justify-center">
-            <video
-              src={seminar.videoUrl}
-              controls
-              className="max-h-96 w-full rounded-lg border shadow"
-            />
-          </div>
-        )}
         {seminar.featuredImage && (
           <div className="relative h-64 md:h-96 w-full mb-8 rounded-lg overflow-hidden">
             <Image
@@ -220,14 +212,7 @@ export default function SeminarDetailPage() {
               {seminar.title}
             </h1>
 
-            <div className="prose prose-lg max-w-none mb-8">
-              <div
-                className="text-gray-700 leading-relaxed"
-                dangerouslySetInnerHTML={{
-                  __html: seminar.description,
-                }}
-              />
-            </div>
+            <SeminarDescription description={seminar.description} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-gray-50 p-6 rounded-lg">
@@ -241,7 +226,7 @@ export default function SeminarDetailPage() {
                     </svg>
                     <div>
                       <strong>Fecha:</strong><br />
-                      {formatDate(seminar.eventDate)}
+                      {formatDateRange(seminar.startDate, seminar.endDate)}
                     </div>
                   </li>
                   <li className="flex items-start">

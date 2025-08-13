@@ -33,6 +33,51 @@ export function formatDate(date: Date | string): string {
   }).format(new Date(date))
 }
 
+export function formatDateRange(startDate: Date | string, endDate: Date | string): string {
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  
+  // Si es el mismo día, mostrar solo una fecha
+  if (start.toDateString() === end.toDateString()) {
+    return new Intl.DateTimeFormat("es-CL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(start)
+  }
+  
+  // Si es el mismo mes, mostrar día-mes-día-mes-año
+  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
+    return `${start.getDate()} - ${end.getDate()} de ${new Intl.DateTimeFormat("es-CL", {
+      month: "long",
+      year: "numeric"
+    }).format(start)}`
+  }
+  
+  // Si es el mismo año, mostrar día-mes - día-mes-año
+  if (start.getFullYear() === end.getFullYear()) {
+    return `${new Intl.DateTimeFormat("es-CL", {
+      month: "long",
+      day: "numeric"
+    }).format(start)} - ${new Intl.DateTimeFormat("es-CL", {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(end)}`
+  }
+  
+  // Fechas completamente diferentes
+  return `${new Intl.DateTimeFormat("es-CL", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(start)} - ${new Intl.DateTimeFormat("es-CL", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(end)}`
+}
+
 export function truncateText(text: string, length: number): string {
   if (text.length <= length) return text
   return text.substr(0, length) + "..."

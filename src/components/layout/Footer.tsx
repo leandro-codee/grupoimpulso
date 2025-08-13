@@ -217,10 +217,10 @@ export default function Footer() {
                   />
                 </svg>
                 <a 
-                  href="mailto:impulso@grupoimpulso.cl" 
+                  href="mailto:alejandrosandoval@grupoimpulso.cl" 
                   className="text-sm sm:text-base hover:text-white transition-colors break-all"
                 >
-                  impulso@grupoimpulso.cl
+                  alejandrosandoval@grupoimpulso.cl
                 </a>
               </li>
             </ul>

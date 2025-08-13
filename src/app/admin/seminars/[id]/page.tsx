@@ -4,7 +4,7 @@ import { useParams } from "next/navigation"
 import AdminLayout from "@/components/admin/AdminLayout"
 import Link from "next/link"
 import { Seminar } from "@/types"
-import { formatDate, formatPrice } from "@/lib/utils"
+import { formatDateRange, formatPrice } from "@/lib/utils"
 
 export default function SeminarDetailPage() {
   const params = useParams()
@@ -103,7 +103,7 @@ export default function SeminarDetailPage() {
                   Fecha del Evento:
                 </dt>
                 <dd className="text-sm text-gray-900">
-                  {formatDate(seminar.eventDate)}
+                  {formatDateRange(seminar.startDate, seminar.endDate)}
                 </dd>
               </div>
               <div>

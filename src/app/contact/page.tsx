@@ -301,8 +301,8 @@ export default function ContactoPage() {
                     <div>
                       <p className="font-medium text-gray-800">Email</p>
                       <p className="text-gray-600">
-                        <a href="mailto:impulso@grupoimpulso.cl">
-                          impulso@grupoimpulso.cl
+                        <a href="mailto:alejandrosandoval@grupoimpulso.cl">
+                          alejandrosandoval@grupoimpulso.cl
                         </a>
                       </p>
                     </div>

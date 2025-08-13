@@ -15,13 +15,29 @@ export default function SeminarForm({
 }: SeminarFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState<Partial<Seminar & { eventDate: string }>>({
+  
+  // Función auxiliar para validar y formatear fechas
+  const formatDateForInput = (date: any): string => {
+    if (!date) return ""
+    
+    try {
+      const dateObj = new Date(date)
+      if (isNaN(dateObj.getTime())) return ""
+      
+      // Formatear solo la fecha (YYYY-MM-DD) sin hora
+      return dateObj.toISOString().split('T')[0]
+    } catch (error) {
+      console.warn("Error formateando fecha:", error)
+      return ""
+    }
+  }
+  
+  const [formData, setFormData] = useState<Partial<Omit<Seminar, 'startDate' | 'endDate'>> & { startDate: string; endDate: string }>({
     title: seminar?.title || "",
     description: seminar?.description || "",
     shortDescription: seminar?.shortDescription || "",
-    eventDate: seminar?.eventDate
-      ? (new Date(seminar.eventDate).toISOString().slice(0, 16) as unknown as any)
-      : ("" as unknown as any),
+    startDate: formatDateForInput(seminar?.startDate),
+    endDate: formatDateForInput(seminar?.endDate),
     duration: seminar?.duration || "",
     modality: seminar?.modality || "in_person",
     price: seminar?.price || 0,
@@ -30,14 +46,35 @@ export default function SeminarForm({
     instructor: seminar?.instructor || "",
     location: seminar?.location || "",
     virtualLink: seminar?.virtualLink || "",
+    videoUrl: seminar?.videoUrl || "",
     status: seminar?.status || "draft",
     featured: seminar?.featured || false,
     featuredImage: seminar?.featuredImage || "",
   })
   const [slotsError, setSlotsError] = useState("");
+  const [dateError, setDateError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validar fechas
+    if (formData.startDate && formData.endDate) {
+      const start = new Date(formData.startDate)
+      const end = new Date(formData.endDate)
+      
+      // Verificar que las fechas sean válidas
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        setDateError("Por favor, ingresa fechas válidas")
+        return
+      }
+      
+      // Para fechas sin hora, la fecha de fin puede ser igual o posterior a la de inicio
+      if (end < start) {
+        setDateError("La fecha de fin debe ser igual o posterior a la fecha de inicio")
+        return
+      }
+    }
+    
     setLoading(true)
 
     try {
@@ -85,6 +122,7 @@ export default function SeminarForm({
           ? value === "" ? 0 : Number(value)
           : value;
       const updated = { ...prev, [name]: newValue };
+      
       // Validación de cupos
       if (
         (name === "availableSlots" && Number(newValue) > Number(prev.totalSlots)) ||
@@ -94,6 +132,30 @@ export default function SeminarForm({
       } else {
         setSlotsError("");
       }
+      
+      // Validación de fechas
+      if (name === "startDate" || name === "endDate") {
+        const start = updated.startDate ? new Date(updated.startDate) : null;
+        const end = updated.endDate ? new Date(updated.endDate) : null;
+        
+        // Verificar que las fechas sean válidas
+        if (start && isNaN(start.getTime())) {
+          setDateError("La fecha de inicio no es válida");
+          return updated;
+        }
+        
+        if (end && isNaN(end.getTime())) {
+          setDateError("La fecha de fin no es válida");
+          return updated;
+        }
+        
+        if (start && end && end < start) {
+          setDateError("La fecha de fin debe ser igual o posterior a la fecha de inicio");
+        } else {
+          setDateError("");
+        }
+      }
+      
       return updated;
     });
   }
@@ -201,16 +263,33 @@ export default function SeminarForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Fecha del Evento *
+              Fecha de Inicio *
             </label>
             <input
-              type="datetime-local"
-              name="eventDate"
-              value={formData.eventDate}
+              type="date"
+              name="startDate"
+              value={formData.startDate}
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Fecha de Fin *
+            </label>
+            <input
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {dateError && (
+              <p className="text-red-600 text-sm mt-1">{dateError}</p>
+            )}
           </div>
 
           <div>
@@ -344,6 +423,23 @@ export default function SeminarForm({
               )}
             </div>
           </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              URL del Video (YouTube)
+            </label>
+            <input
+              type="url"
+              name="videoUrl"
+              value={formData.videoUrl}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="https://www.youtube.com/embed/..."
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              Pega la URL de embed de YouTube (ej: https://www.youtube.com/embed/VIDEO_ID)
+            </p>
+          </div>
         </div>
 
         <div>
@@ -409,39 +505,6 @@ export default function SeminarForm({
           </div>
         )}
 
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Video del Seminario (opcional, mp4)
-          </label>
-          <div className="space-y-2">
-            <label className="cursor-pointer inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
-              Subir Video
-              <input
-                type="file"
-                accept="video/mp4"
-                onChange={handleVideoUpload}
-                className="hidden"
-              />
-            </label>
-            {formData.videoUrl && (
-              <div className="mt-2">
-                <video
-                  src={formData.videoUrl}
-                  controls
-                  className="h-32 w-56 object-cover rounded-lg border"
-                />
-                <button
-                  type="button"
-                  onClick={() => setFormData(prev => ({ ...prev, videoUrl: "" }))}
-                  className="mt-1 text-sm text-red-600 hover:text-red-800"
-                >
-                  Eliminar video
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
         <div className="flex items-center space-x-4">
           <label className="flex items-center">
             <input
@@ -467,7 +530,7 @@ export default function SeminarForm({
           </button>
           <button
             type="submit"
-            disabled={loading || !!slotsError}
+            disabled={loading || !!slotsError || !!dateError}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold disabled:opacity-50"
           >
             {loading ? "Guardando..." : isEditing ? "Actualizar Seminario" : "Crear Seminario"}

@@ -20,7 +20,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        {/* <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Cursos</h3>
           <p className="text-gray-600 mb-4">Administra cursos de formación</p>
           <Link
@@ -29,7 +29,7 @@ export default function AdminDashboard() {
           >
             Ver Cursos
           </Link>
-        </div>
+        </div> */}
 
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Noticias</h3>
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        {/* <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Ventas</h3>
           <p className="text-gray-600 mb-4">Revisa las inscripciones y pagos</p>
           <Link
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
           >
             Ver Ventas
           </Link>
-        </div>
+        </div> */}
       </div>
     </AdminLayout>
   )

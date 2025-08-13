@@ -46,7 +46,8 @@ export async function PUT(request: NextRequest, { params }: any) {
     const updateData = {
       ...body,
       slug: generateSlug(body.title),
-      eventDate: new Date(body.eventDate),
+      startDate: new Date(body.startDate + 'T00:00:00.000Z'),
+      endDate: new Date(body.endDate + 'T23:59:59.999Z'),
     }
 
     const result = await updateDocument(

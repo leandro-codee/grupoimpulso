@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Seminar } from "@/types"
-import { formatDate } from "@/lib/utils"
+import { formatDateRange } from "@/lib/utils"
 
 const modalityLabels = {
   in_person: "Presencial",
@@ -142,7 +142,7 @@ export default function SeminarsPage() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {formatDate(seminar.eventDate)}
+                  {formatDateRange(seminar.startDate, seminar.endDate)}
                 </div>
 
                 <div className="flex items-center text-sm text-gray-500">
