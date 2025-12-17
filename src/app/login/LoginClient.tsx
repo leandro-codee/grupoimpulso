@@ -47,8 +47,16 @@ export default function LoginClient() {
       if (result?.error) {
         setError("Credenciales inválidas")
       } else if (result?.ok) {
-        // Success - redirect to admin panel
-        router.replace("/admin")
+        // Wait a moment for the session cookie to be set
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        // Verify session before redirecting
+        const session = await getSession()
+        if (session && (session.user as any).role === "admin") {
+          router.replace("/admin")
+        } else {
+          // Force a hard refresh to ensure cookies are set
+          window.location.href = "/admin"
+        }
       }
     } catch (error) {
       console.error("Login error:", error)
