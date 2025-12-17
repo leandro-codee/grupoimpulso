@@ -48,15 +48,22 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // Allow sign in if user exists (already validated in authorize)
+      return true
+    },
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id
         token.role = (user as any).role
+        token.email = user.email
+        token.name = user.name
       }
       return token
     },
     async session({ session, token }: any) {
       if (token) {
-        session.user.id = token.sub!
+        session.user.id = token.id || token.sub!
         ;(session.user as any).role = token.role
       }
       return session
@@ -70,7 +77,7 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
   cookies: {
     sessionToken: {
-      name: `${process.env.NODE_ENV === "production" ? "__Secure-" : ""}next-auth.session-token`,
+      name: `next-auth.session-token`,
       options: {
         httpOnly: true,
         sameSite: "lax",
@@ -79,7 +86,6 @@ export const authOptions: NextAuthOptions = {
       },
     },
   },
-  useSecureCookies: process.env.NODE_ENV === "production",
 }
 
 // Helper function to create initial admin user
