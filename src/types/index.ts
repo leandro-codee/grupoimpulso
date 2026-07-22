@@ -23,6 +23,11 @@ export interface Seminar {
   price: number
   totalSlots: number
   availableSlots: number
+  /**
+   * Si es true, la UI pública no muestra el número de cupos: en su lugar
+   * muestra simplemente "Cupos disponibles" y permite inscribirse igual.
+   */
+  hideSlots?: boolean
   instructor: string
   location?: string
   virtualLink?: string

@@ -298,11 +298,16 @@ export default function ContactoPage() {
                     <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mt-1">
                       <span className="text-white text-xs">📧</span>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="font-medium text-gray-800">Email</p>
-                      <p className="text-gray-600">
-                        <a href="mailto:alejandrosandoval@grupoimpulso.cl">
+                      <p className="text-sm text-gray-600 whitespace-nowrap">
+                        <a href="mailto:alejandrosandoval@grupoimpulso.cl" className="hover:text-blue-600 transition-colors">
                           alejandrosandoval@grupoimpulso.cl
+                        </a>
+                      </p>
+                      <p className="text-sm text-gray-600 whitespace-nowrap">
+                        <a href="mailto:impulso@grupoimpulso.cl" className="hover:text-blue-600 transition-colors">
+                          impulso@grupoimpulso.cl
                         </a>
                       </p>
                     </div>

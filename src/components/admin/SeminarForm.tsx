@@ -43,6 +43,7 @@ export default function SeminarForm({
     price: seminar?.price || 0,
     totalSlots: seminar?.totalSlots || 1,
     availableSlots: seminar?.availableSlots || 0,
+    hideSlots: seminar?.hideSlots || false,
     instructor: seminar?.instructor || "",
     location: seminar?.location || "",
     virtualLink: seminar?.virtualLink || "",
@@ -365,12 +366,26 @@ export default function SeminarForm({
               value={formData.availableSlots === 0 ? "" : formData.availableSlots}
               onChange={handleChange}
               min="0"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={formData.hideSlots}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
               placeholder="0"
             />
             {slotsError && (
               <p className="text-red-600 text-sm mt-1">{slotsError}</p>
             )}
+            <label className="flex items-start mt-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="hideSlots"
+                checked={formData.hideSlots}
+                onChange={handleChange}
+                className="mr-2 mt-0.5 w-4 h-4 text-blue-600"
+              />
+              <span className="text-sm text-gray-700">
+                No mostrar número de cupos (mostrar solo{" "}
+                <strong>&quot;Cupos disponibles&quot;</strong> en la web)
+              </span>
+            </label>
           </div>
 
           <div>

@@ -166,12 +166,13 @@ export default function NewsPage() {
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
             {article.featuredImage && (
-              <div className="relative h-48 w-full">
+              <div className="relative h-56 sm:h-64 w-full overflow-hidden">
                 <Image
                   src={article.featuredImage}
                   alt={article.title}
                   fill
-                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-500 hover:scale-105"
                 />
               </div>
             )}

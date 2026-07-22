@@ -43,6 +43,25 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/*
+ * Marca Grupo Impulso: se remapea la escala `blue-*` de Tailwind al azul
+ * corporativo rgb(87,152,223) = #5798DF. Todas las clases blue-600/700/800...
+ * existentes en el sitio adoptan este tono sin editar cada archivo.
+ */
+@theme {
+  --color-blue-50: #eff6fd;
+  --color-blue-100: #dbeafb;
+  --color-blue-200: #c2ddf6;
+  --color-blue-300: #9cc6ee;
+  --color-blue-400: #79b0e5;
+  --color-blue-500: #6aa4e1;
+  --color-blue-600: #5798df; /* color de marca exacto */
+  --color-blue-700: #3f7fc4;
+  --color-blue-800: #35699e;
+  --color-blue-900: #2e567f;
+  --color-blue-950: #22405f;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

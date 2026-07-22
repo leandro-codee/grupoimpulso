@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Logo and description */}
           <div className="col-span-1 sm:col-span-2 lg:col-span-2">
             <div className="flex items-center mb-4">
@@ -114,7 +114,7 @@ export default function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div className="col-span-1">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-2">
             <h3 className="text-lg font-semibold mb-4">Contacto</h3>
             <ul className="space-y-3 text-gray-400">
               <li className="flex items-start">
@@ -216,12 +216,20 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <a 
-                  href="mailto:alejandrosandoval@grupoimpulso.cl" 
-                  className="text-sm sm:text-base hover:text-white transition-colors break-all"
-                >
-                  alejandrosandoval@grupoimpulso.cl
-                </a>
+                <div className="flex flex-col space-y-1 min-w-0">
+                  <a
+                    href="mailto:alejandrosandoval@grupoimpulso.cl"
+                    className="text-sm hover:text-white transition-colors whitespace-nowrap"
+                  >
+                    alejandrosandoval@grupoimpulso.cl
+                  </a>
+                  <a
+                    href="mailto:impulso@grupoimpulso.cl"
+                    className="text-sm hover:text-white transition-colors whitespace-nowrap"
+                  >
+                    impulso@grupoimpulso.cl
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
