@@ -1,32 +1,41 @@
 import { MongoClient, Db } from "mongodb"
 
-if (!process.env.MONGODB_URI) {
-  throw new Error("Please add your MongoDB URI to .env.local")
-}
-
-const uri = process.env.MONGODB_URI
 const options = {}
 
-let client: MongoClient
-let clientPromise: Promise<MongoClient>
+// Inicialización lazy: NO se conecta ni se valida el env al importar el módulo.
+// Esto evita que `next build` falle en "Collecting page data" cuando la ruta
+// API se importa sin MONGODB_URI disponible. La conexión (y la validación del
+// env) ocurre recién en el primer uso real, en tiempo de request.
+let clientPromise: Promise<MongoClient> | undefined
 
 declare global {
-  var _mongoClientPromise: Promise<MongoClient>
+  var _mongoClientPromise: Promise<MongoClient> | undefined
 }
 
-if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options)
-    global._mongoClientPromise = client.connect()
+function getClientPromise(): Promise<MongoClient> {
+  if (clientPromise) return clientPromise
+
+  const uri = process.env.MONGODB_URI
+  if (!uri) {
+    throw new Error("Please add your MongoDB URI to .env.local")
   }
-  clientPromise = global._mongoClientPromise
-} else {
-  client = new MongoClient(uri, options)
-  clientPromise = client.connect()
+
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+      const client = new MongoClient(uri, options)
+      global._mongoClientPromise = client.connect()
+    }
+    clientPromise = global._mongoClientPromise
+  } else {
+    const client = new MongoClient(uri, options)
+    clientPromise = client.connect()
+  }
+
+  return clientPromise
 }
 
 export async function getDatabase(): Promise<Db> {
-  const client = await clientPromise
+  const client = await getClientPromise()
   return client.db()
 }
 
@@ -78,5 +87,3 @@ export async function deleteDocument(collection: string, query: any) {
   const coll = await getCollection(collection)
   return coll.deleteOne(query)
 }
-
-export default clientPromise
