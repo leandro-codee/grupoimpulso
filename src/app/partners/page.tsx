@@ -39,19 +39,19 @@ export default function PartnersPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2">• Sindicatos:</h3>
-                  <p className="text-gray-600 ml-4">minería, salud, banca, energía, servicios, retail y sector público.</p>
+                  <p className="text-gray-600 ml-4">Minería, salud, banca, energía, servicios, retail y sector público.</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2">• Empresas:</h3>
-                  <p className="text-gray-600 ml-4">compañías líderes en minería, manufactura, servicios y transporte.</p>
+                  <p className="text-gray-600 ml-4">Compañías líderes en minería, manufactura, servicios y transporte.</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2">• Gobiernos locales y regionales:</h3>
-                  <p className="text-gray-600 ml-4">municipios, divisiones de desarrollo local, organismos de participación.</p>
+                  <p className="text-gray-600 ml-4">Municipios, divisiones de desarrollo local, organismos de participación.</p>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-2">• Organizaciones sociales y comunitarias:</h3>
-                  <p className="text-gray-600 ml-4">que trabajan por la equidad, el liderazgo ciudadano y el desarrollo territorial.</p>
+                  <p className="text-gray-600 ml-4">Que trabajan por la equidad, el liderazgo ciudadano y el desarrollo territorial.</p>
                 </div>
               </div>
             </div>

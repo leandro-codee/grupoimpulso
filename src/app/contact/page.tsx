@@ -100,8 +100,7 @@ export default function ContactoPage() {
           </h1>
 
           <p className="text-lg text-gray-600 text-center mb-12">
-            ¿Tienes alguna consulta o te interesa colaborar con nosotros? No
-            dudes en contactarnos.
+            ¿Tienes alguna consulta con nosotros? No dudes en contactarnos.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

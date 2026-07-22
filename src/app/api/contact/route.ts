@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,13 +13,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // La API key se carga desde la variable de entorno RESEND_API_KEY.
+    // Se lee dentro del handler (lazy) para no romper el build si falta.
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      console.error('RESEND_API_KEY no está configurada')
+      return NextResponse.json(
+        { error: 'El servicio de email no está configurado. Por favor contáctanos por WhatsApp.' },
+        { status: 500 }
+      )
+    }
+
+    // Remitente: debe ser un dominio verificado en Resend.
+    // Configurable vía CONTACT_FROM_EMAIL; por defecto el dominio de Grupo Impulso.
+    const fromEmail =
+      process.env.CONTACT_FROM_EMAIL || 'Grupo Impulso <no-reply@grupoimpulso.cl>'
+    // Destinatario (dueño del sitio). Configurable vía OWNER_EMAIL.
+    const toEmail = process.env.OWNER_EMAIL || 'impulso@grupoimpulso.cl'
+
     // Crear contenido HTML para el email
     const emailContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #1f2937; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
+        <h1 style="color: #1f2937; border-bottom: 2px solid #5798df; padding-bottom: 10px;">
           Nuevo mensaje desde Grupo Impulso
         </h1>
-        
+
         <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
           <h2 style="color: #374151; margin-top: 0;">Información del contacto:</h2>
           <p><strong>Nombre:</strong> ${name}</p>
@@ -38,39 +57,29 @@ export async function POST(request: NextRequest) {
       </div>
     `
 
-    // Enviar email usando la API de KiraCloud desde el servidor
-    const response = await fetch('https://mails-api.kiracloud.dev/api/email/simple', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: process.env.OWNER_EMAIL,
-        subject: `${subject} - Mensaje de ${name}`,
-        content: emailContent,
-        from: 'no-reply'
-      }),
+    // Enviar email usando Resend
+    const resend = new Resend(apiKey)
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
+      to: toEmail,
+      replyTo: email, // responder va directo a quien escribió
+      subject: `${subject} - Mensaje de ${name}`,
+      html: emailContent,
     })
 
-    if (!response.ok) {
-      // Si KiraCloud falla, intentar con una API alternativa o enviar respuesta de error
-      console.error('Error de KiraCloud:', response.status, await response.text())
-      
-      // Podríamos intentar con otra API aquí, pero por ahora retornamos error específico
+    if (error) {
+      console.error('Error de Resend:', error)
       return NextResponse.json(
         { error: 'Error en el servicio de email. Por favor intenta nuevamente o contáctanos por WhatsApp.' },
         { status: 500 }
       )
     }
 
-    const result = await response.json()
-    
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       message: 'Email enviado exitosamente',
-      data: result 
+      data,
     })
-
   } catch (error) {
     console.error('Error en API de contacto:', error)
     return NextResponse.json(
@@ -78,4 +87,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}
